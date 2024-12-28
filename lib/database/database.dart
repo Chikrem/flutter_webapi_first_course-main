@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter_webapi_first_course/helpers/phrases.dart';
+import 'package:teste1/helpers/phrases.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/journal.dart';
