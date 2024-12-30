@@ -38,7 +38,7 @@ dependencies:
   uuid: ^3.0.6
   google_fonts: ^4.0.4
   http: ^0.13.5
-
+  http_interceptor: ^1.0.2
 
 dev_dependencies:
   flutter_test:

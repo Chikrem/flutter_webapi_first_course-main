@@ -10,7 +10,7 @@ void main() {
 
   JournalService service = JournalService();
   service.register("Olá mundo!");
-  service.get();
+  // service.get();
 
 }
 
