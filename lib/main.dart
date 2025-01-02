@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste1/add_journal_screen/add_journal_screen.dart';
 import 'package:teste1/models/journal.dart';
-import 'package:teste1/service/journal_service.dart';
-import 'package:uuid/uuid.dart';
+// import 'package:teste1/service/journal_service.dart';
+// import 'package:uuid/uuid.dart';
 import 'screens/home_screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 
-  JournalService service = JournalService();
-  service.register(Journal(id: Uuid().v1(), content: "content", createdAt:  DateTime.now(), updatedAt:  DateTime.now()));
+  // JournalService service = JournalService();
+  // service.register(Journal.empty());
   // service.get();
   // asyncStudy();
 }
