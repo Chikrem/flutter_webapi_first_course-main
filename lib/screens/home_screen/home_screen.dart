@@ -3,6 +3,7 @@ import 'package:teste1/database/database.dart';
 import 'package:teste1/screens/home_screen/widgets/home_screen_list.dart';
 
 import '../../models/journal.dart';
+import '../../service/journal_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ScrollController _listScrollController = ScrollController();
 
+  JournalService service = JournalService();
+
   @override
   void initState() {
     refresh();
@@ -41,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         controller: _listScrollController,
         children: generateListJournalCards(
+          refreshFunction: refresh,
           windowPage: windowPage,
           currentDay: currentDay,
           database: database,
@@ -49,9 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void refresh() {
+  void refresh() async{
+    List<Journal> listJournal = await service.getAll();
     setState(() {
-      database = generateRandomDatabase(maxGap: windowPage, amount: 3);
+      database = {};
+      for (Journal journal in listJournal ){
+        database[journal.id] = journal;
+      }
     });
   }
 }
