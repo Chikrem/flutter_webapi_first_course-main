@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teste1/database/database.dart';
+//import 'package:teste1/database/database.dart';
 import 'package:teste1/screens/home_screen/widgets/home_screen_list.dart';
 
 import '../../models/journal.dart';
@@ -40,6 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           "${currentDay.day}  |  ${currentDay.month}  |  ${currentDay.year}",
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              refresh();
+            },
+            icon: const Icon(Icons.refresh),
+          )
+        ],
       ),
       body: ListView(
         controller: _listScrollController,
