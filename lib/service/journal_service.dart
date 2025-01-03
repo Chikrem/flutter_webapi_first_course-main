@@ -30,24 +30,24 @@ class JournalService{
     return false;
   }
 
-
-  // void register(String content) async {
-  //   var response = await client.post(
-  //     Uri.parse(getUrl()),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: json.encode({'content': content}),
-  //   );
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     print('Registro bem-sucedido: ${response.body}');
-  //   } else {
-  //     print('Falha no registro: ${response.statusCode}');
-  //   }
-  // }
-
-  Future<String> get () async {
+  Future<List<Journal>> getAll () async {
     http.Response response = await client.get(Uri.parse(getUrl()));
-    print(response.body);
-    return response.body;
+
+    if(response.statusCode != 200){
+      throw Exception();
+    }
+
+    List<Journal> list = [];
+
+    List<dynamic> listDynamic = json.decode(response.body);
+
+    for (var jsonMap in listDynamic){
+      list.add(Journal.fromMap(jsonMap));
+    }
+
+    print(list.length);
+
+    return list;
   }
 
 }
