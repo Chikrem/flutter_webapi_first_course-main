@@ -10,6 +10,11 @@
       "email": "ricarth@gmail.com",
       "password": "$2a$10$dt3WK2roW.opgOfEaGijFu.tmuC7394Eiog.ua891cEATOBxUlZbi",
       "id": 2
+    },
+    {
+      "email": "carlos@alura.com.br",
+      "password": "$2a$10$wYBrFOJZ1Yun38xfe0MaeOGk0Q2d5G0dyu3TWbtbLkavybQ0sRXky",
+      "id": 3
     }
   ],
   "journals": [
@@ -24,12 +29,6 @@
       "content": "Testye",
       "created_at": "2025-01-09T18:20:56.276697",
       "updated_at": "2025-01-09T18:20:56.276697"
-    },
-    {
-      "id": "96f10380-cf9c-11ef-8d7a-5361afc382c6",
-      "content": "Del\n",
-      "created_at": "2025-01-04T18:20:56.276697",
-      "updated_at": "2025-01-04T18:20:56.276697"
     }
   ]
 }
