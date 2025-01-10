@@ -59,9 +59,18 @@ class JournalService{
       list.add(Journal.fromMap(jsonMap));
     }
 
-    print(list.length);
+    // print(list.length);
 
     return list;
+  }
+
+  Future<bool> remove(Journal journal) async {
+    http.Response response = await client.delete(Uri.parse(getUrl() + journal.id));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 
 }
