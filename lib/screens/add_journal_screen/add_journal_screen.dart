@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teste1/helpers/weekday.dart';
 import 'package:teste1/models/journal.dart';
 
-import '../service/journal_service.dart';
+import '../../service/journal_service.dart';
 
 class AddJournalScreen extends StatelessWidget {
 
@@ -13,6 +13,9 @@ class AddJournalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        
+    _contentController.text = journal.content; 
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("${WeekDay(journal.createdAt.weekday).long.toLowerCase()}, ${journal.createdAt.day}  |  ${journal.createdAt.month}  |  ${journal.createdAt.year}"),
@@ -36,7 +39,30 @@ class AddJournalScreen extends StatelessWidget {
     );
   }
 
-  registerJournal(BuildContext context) {
+  // Se Journal for vazio, chama o método registerJournal, senão chama o método editJournal 
+
+  void registerJournal(BuildContext context){
+    if (journal.content == ''){
+      _registerJournal(context);
+    }else{
+      _editJournal(context);
+    }
+  }
+
+  // Método editJournal
+  void _editJournal(BuildContext context) {
+    String content = _contentController.text;
+
+    journal.content = content;
+
+    JournalService service = JournalService();
+    service.edit(journal).then((value) {
+      Navigator.pop(context, value);
+    });
+  }
+
+  // Método registerJournal
+  void _registerJournal(BuildContext context) {
     String content = _contentController.text;
 
     journal.content = content;
