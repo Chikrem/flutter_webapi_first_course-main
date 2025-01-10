@@ -145,10 +145,10 @@ class JournalCard extends StatelessWidget {
           "Deseja realmente remover o registro de ${WeekDay(journal!.createdAt.weekday)}?",
       affirmativeOption: "Remover",
     ).then((value) {
-      if (value != null && value) {
+      if (value != null && value) {     // Se clicar fora = null
         JournalService service = JournalService();
         if (journal != null) {
-          service.remove(journal!).then((value) {
+          service.remove(journal!.id).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text((value)
                     ? "Removido com sucesso!"
