@@ -20,6 +20,11 @@
       "email": "input@input.com",
       "password": "$2a$10$OkWrZMx/Q0WbPcVtsIhtee9FPewsR2qhM8a/cVFRZf3.pA55jneM.",
       "id": 4
+    },
+    {
+      "email": "dadasdqaw@dasdqwdqw",
+      "password": "$2a$10$DvV6DfxIfSkLr81wwQ7X6eBjA0CYHl7TzJpziJUexrSJbKSH860.q",
+      "id": 5
     }
   ],
   "journals": [

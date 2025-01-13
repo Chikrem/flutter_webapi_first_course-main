@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:teste1/screens/common/dialog.dart';
 import 'package:teste1/service/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
-  
   LoginScreen({Key? key}) : super(key: key);
 
   // Controller para capturar dados de TextField de E-mail e Senha
@@ -58,8 +58,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        login();
-                      }, child: const Text("Continuar")),
+                        login(context);
+                      },
+                      child: const Text("Continuar")),
                 ],
               ),
             ),
@@ -69,15 +70,25 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void login() {
+  void login(BuildContext context) async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
     print("$password - $email");
 
-    _authService.login(email: email, password: password);
-
-
+    try {
+      bool result = await _authService.login(email: email, password: password);
+    } on UserNotFoundException {
+                    showConfirmationDialog(
+                context,
+                content: 
+                    "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
+                affirmativeOption: "CRIAR"
+            ).then((value) {
+              if (value == true) {
+                _authService.register(email, password);
+              }
+            });
+    }
   }
-
 }
