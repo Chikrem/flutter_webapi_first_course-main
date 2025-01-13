@@ -1,5 +1,4 @@
-// Início Aula-5
-
+// Final Aula-5
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teste1/screens/add_journal_screen/add_journal_screen.dart';
@@ -15,7 +14,6 @@ void main() {
   JournalService service = JournalService();
   // service.register(Journal.empty());
   // service.getAll();
-  // asyncStudy();
 }
 
 class MyApp extends StatelessWidget {
