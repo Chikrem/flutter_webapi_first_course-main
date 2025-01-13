@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/intercepted_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste1/service/http_interceptors.dart';
 
 class AuthService {
@@ -29,7 +30,7 @@ class AuthService {
       }
       throw HttpException(response.body);
     } else {
-      print("Erro ao efetuar login");
+      print("Login Efetuado com Sucesso!");
     }
 
     saveUserInfos(response.body);
@@ -51,13 +52,20 @@ class AuthService {
     }
   }
 
-  saveUserInfos(String body) {
+  saveUserInfos(String body) async {
     Map<String, dynamic> map = json.decode(body);
         String token = map["accessToken"];
         String email = map["user"]["email"];
         int id = map["user"]["id"];
 
-    print("Token: $token Email: $email Id: $id");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("accessToken", token);
+        prefs.setString("email", email);
+        prefs.setInt("id", id);
+
+        String? tokenSalvo = prefs.getString("accessToken");
+        print(tokenSalvo);
+
   }
 
 }
