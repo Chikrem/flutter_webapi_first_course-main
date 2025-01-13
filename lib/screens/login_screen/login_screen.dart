@@ -74,21 +74,31 @@ class LoginScreen extends StatelessWidget {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    print("$password - $email");
+    // print("$password - $email");
 
     try {
-      bool result = await _authService.login(email: email, password: password);
+      _authService.login(email: email, password: password).then((resultLogin) {
+        if (resultLogin) {
+          Navigator.pushReplacementNamed(context, "home");
+        }
+      });
     } on UserNotFoundException {
-                    showConfirmationDialog(
-                context,
-                content: 
-                    "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
-                affirmativeOption: "CRIAR"
-            ).then((value) {
-              if (value == true) {
-                _authService.register(email, password);
-              }
-            });
+      showConfirmationDialog(
+        context,
+        content:
+            "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
+        affirmativeOption: "CRIAR",
+      ).then((value) {
+        if (value != null && value) {
+          _authService
+              .register(email: email, password: password)
+              .then((resultRegister) {
+            if (resultRegister) {
+              Navigator.pushReplacementNamed(context, "home");
+            }
+          });
+        }
+      });
     }
   }
 }

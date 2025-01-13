@@ -14,7 +14,7 @@ class AuthService {
   );
 
   Future<bool> login({required String email, required String password}) async {
-    final response = await client.post(
+    http.Response response = await client.post(
       Uri.parse("${url}login"),
       body: {
         "email": email,
@@ -38,7 +38,7 @@ class AuthService {
     return true;
   }
 
-  Future<void> register(String email, String password) async {
+  Future<bool> register({required String email, required String password}) async {
     final response = await client.post(
       Uri.parse("${url}register"),
       body: {
@@ -50,6 +50,7 @@ class AuthService {
     if (response.statusCode != 201) {
       throw HttpException(response.body);
     }
+    return true;
   }
 
   saveUserInfos(String body) async {
