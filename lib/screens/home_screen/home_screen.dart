@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:teste1/database/database.dart';
 import 'package:teste1/screens/home_screen/widgets/home_screen_list.dart';
 
@@ -61,13 +62,41 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void refresh() async{
-  //   List<Journal> listJournal = await service.getAll();
-  //   setState(() {
-  //     database = {};
-  //     for (Journal journal in listJournal ){
-  //       database[journal.id] = journal;
-  //     }
-  //   });
+  void refresh() {
+    SharedPreferences.getInstance().then((prefs) {
+      String? token = prefs.getString("accessToken");
+      String? email = prefs.getString("email");
+      int? id = prefs.getInt("id");
+      // print("Token armazenado: $token");
+
+if(token != null && email != null && id != null){
+
+        service.getAll(id: id.toString(), token: token).then((List<Journal> listJournal) {
+
+          if(listJournal.isNotEmpty){
+
+            setState(() {
+              database = {};
+              for (Journal journal in listJournal) {
+                database[journal.id] = journal;
+              }
+
+              if (_listScrollController.hasClients) {
+                final double position = _listScrollController.position
+                    .maxScrollExtent;
+                _listScrollController.jumpTo(position);
+              }
+            });
+
+          }else{
+
+            Navigator.pushReplacementNamed(context, "login");
+          }
+        });
+
+      }else{
+        Navigator.pushReplacementNamed(context, "login");
+      }
+    });
   }
 }

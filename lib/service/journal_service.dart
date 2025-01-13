@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
+import 'package:teste1/service/auth_service.dart';
 import 'package:teste1/service/http_interceptors.dart';
 
 import '../models/journal.dart';
@@ -54,15 +55,18 @@ class JournalService{
     return false;
   }
 
-  Future<List<Journal>> getAll() async {
-    http.Response response = await client.get(getUri());
+Future<List<Journal>> getAll({required String id, required String token}) async {
+    http.Response response = await client.get(
+      Uri.parse("${url}users/$id/journals"),
+      headers: {"Authorization" : "Bearer $token"});
+
+    List<Journal> result = [];
 
     if (response.statusCode != 200) {
       //TODO: Criar uma exceção personalizada
-      throw Exception();
+      return result;
     }
 
-    List<Journal> result = [];
 
     List<dynamic> jsonList = json.decode(response.body);
     for (var jsonMap in jsonList) {

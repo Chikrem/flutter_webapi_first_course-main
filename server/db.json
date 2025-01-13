@@ -3,7 +3,7 @@
   "users": [
     {
       "email": "ricarth.lima@alura.com.br",
-      "password": "$2a$10$bZgT0V0SvsUWhCWKPQMvsO96DYScE5zr/pnRGJzlSHdazsbiXX/xm",
+      "password": "$2a$10$OkWrZMx/Q0WbPcVtsIhtee9FPewsR2qhM8a/cVFRZf3.pA55jneM.",
       "id": 1
     },
     {
@@ -42,13 +42,15 @@
       "id": "abc735c0-cf99-11ef-8d7a-5361afc382c6",
       "content": "dasdasdas",
       "created_at": "2025-01-07T18:20:56.276697",
-      "updated_at": "2025-01-07T18:20:56.276697"
+      "updated_at": "2025-01-07T18:20:56.276697",
+      "userId": 4
     },
     {
       "id": "938fb010-cf9c-11ef-8d7a-5361afc382c6",
       "content": "Testye",
       "created_at": "2025-01-09T18:20:56.276697",
-      "updated_at": "2025-01-09T18:20:56.276697"
+      "updated_at": "2025-01-09T18:20:56.276697",
+      "userId": 4
     }
   ]
 }

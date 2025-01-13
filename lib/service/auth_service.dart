@@ -69,6 +69,13 @@ class AuthService {
 
   }
 
+  deleteUserInfos() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("accessToken");
+    prefs.remove("id");
+    prefs.remove("email");
+  }
+
 }
 
 class UserNotFoundException implements Exception {}
