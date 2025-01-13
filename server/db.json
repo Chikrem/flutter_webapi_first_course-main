@@ -25,6 +25,16 @@
       "email": "dadasdqaw@dasdqwdqw",
       "password": "$2a$10$DvV6DfxIfSkLr81wwQ7X6eBjA0CYHl7TzJpziJUexrSJbKSH860.q",
       "id": 5
+    },
+    {
+      "email": "input2@input.com",
+      "password": "$2a$10$c6Im70pb6chqLrv5m5yJEOEkOwRkalYHNk0LTZeAA0Q7Q3jsS8.1q",
+      "id": 6
+    },
+    {
+      "email": "casca@asd.com",
+      "password": "$2a$10$5fwLaMHqCCJMWcaXrlHcBu4yQD2S498BbfwhPW5PvBQr6ZC6iI76.",
+      "id": 7
     }
   ],
   "journals": [

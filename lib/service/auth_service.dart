@@ -31,6 +31,9 @@ class AuthService {
     } else {
       print("Erro ao efetuar login");
     }
+
+    saveUserInfos(response.body);
+
     return true;
   }
 
@@ -43,12 +46,20 @@ class AuthService {
       },
     );
 
-    if (response.statusCode == 200) {
-      print("Cadastro efetuado com sucesso");
-    } else {
-      print("Erro ao efetuar cadastro");
+    if (response.statusCode != 201) {
+      throw HttpException(response.body);
     }
   }
+
+  saveUserInfos(String body) {
+    Map<String, dynamic> map = json.decode(body);
+        String token = map["accessToken"];
+        String email = map["user"]["email"];
+        int id = map["user"]["id"];
+
+    print("Token: $token Email: $email Id: $id");
+  }
+
 }
 
 class UserNotFoundException implements Exception {}

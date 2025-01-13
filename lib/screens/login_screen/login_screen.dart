@@ -3,7 +3,7 @@ import 'package:teste1/screens/common/dialog.dart';
 import 'package:teste1/service/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({super.key});
 
   // Controller para capturar dados de TextField de E-mail e Senha
   final TextEditingController _emailController = TextEditingController();
