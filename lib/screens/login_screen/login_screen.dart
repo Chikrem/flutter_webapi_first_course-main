@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:teste1/service/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  
+  LoginScreen({Key? key}) : super(key: key);
+
+  // Controller para capturar dados de TextField de E-mail e Senha
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Instancia de AuthService
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +43,23 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const Text("Entre ou Registre-se"),
                   TextFormField(
+                    controller: _emailController,
                     decoration: const InputDecoration(
                       label: Text("E-mail"),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
                   TextFormField(
+                    controller: _passwordController,
                     decoration: const InputDecoration(label: Text("Senha")),
                     keyboardType: TextInputType.visiblePassword,
                     maxLength: 16,
                     obscureText: true,
                   ),
                   ElevatedButton(
-                      onPressed: () {}, child: const Text("Continuar")),
+                      onPressed: () {
+                        login();
+                      }, child: const Text("Continuar")),
                 ],
               ),
             ),
@@ -55,4 +68,16 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  void login() {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    print("$password - $email");
+
+    _authService.login(email: email, password: password);
+
+
+  }
+
 }

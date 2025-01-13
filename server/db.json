@@ -15,6 +15,11 @@
       "email": "carlos@alura.com.br",
       "password": "$2a$10$wYBrFOJZ1Yun38xfe0MaeOGk0Q2d5G0dyu3TWbtbLkavybQ0sRXky",
       "id": 3
+    },
+    {
+      "email": "input@input.com",
+      "password": "$2a$10$OkWrZMx/Q0WbPcVtsIhtee9FPewsR2qhM8a/cVFRZf3.pA55jneM.",
+      "id": 4
     }
   ],
   "journals": [
