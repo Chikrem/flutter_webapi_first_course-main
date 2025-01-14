@@ -21,9 +21,6 @@ class JournalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (journal != null) {
       return InkWell(
-        onTap: () {
-          callAddJournalScreen(context, journal: journal);
-        },
         child: Container(
           height: 115,
           margin: const EdgeInsets.all(8),
@@ -86,6 +83,12 @@ class JournalCard extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
+                  callAddJournalScreen(context, journal: journal);
+                },
+                icon: const Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () {
                   removeJournal(context);
                 },
                 icon: const Icon(Icons.delete),
@@ -112,34 +115,41 @@ class JournalCard extends StatelessWidget {
     }
   }
 
-  void callAddJournalScreen(BuildContext context, {Journal? journal}) {
-    Journal innerJournal = Journal(
-      id: const Uuid().v1(),
-      content: "",
-      createdAt: showedDate,
-      updatedAt: showedDate,
-      userId: userId,           // Informação requisitada via construtor
-    );
+void callAddJournalScreen(BuildContext context, {Journal? journal}) {
+  Journal innerJournal = Journal(
+    id: const Uuid().v1(),
+    content: "",
+    createdAt: showedDate,
+    updatedAt: showedDate,
+    userId: userId,
+  );
 
-    if (journal != null) {
-      innerJournal = journal;
-    }
+  bool isEditing = false;
 
-    Navigator.pushNamed(
-      context,
-      'add-journal',
-      arguments: innerJournal,
-    ).then((value) {
-      refreshFunction();
-      if (value != null && value == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Registro feito com sucesso!"),
-          ),
-        );
-      }
-    });
+  if (journal != null) {
+    innerJournal = journal;
+    isEditing = true; // Define que está editando
   }
+
+  Navigator.pushNamed(
+    context,
+    'add-journal',
+    arguments: {
+      'journal': innerJournal,
+      'isEditing': isEditing,
+    },
+  ).then((value) {
+    refreshFunction();
+    if (value != null && value == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Registro feito com sucesso!"),
+        ),
+      );
+    }
+  });
+}
+
 
   void removeJournal(BuildContext context) {
     showConfirmationDialog(

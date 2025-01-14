@@ -1,35 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste1/helpers/weekday.dart';
 import 'package:teste1/models/journal.dart';
 
 import '../../service/journal_service.dart';
 
 class AddJournalScreen extends StatelessWidget {
-
   final Journal journal;
-  AddJournalScreen({super.key, required this.journal});
+  final bool isEditing; // Novo parâmetro para indicar o estado
+
+  AddJournalScreen({
+    super.key,
+    required this.journal,
+    required this.isEditing,
+  });
 
   final TextEditingController _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-        
-    _contentController.text = journal.content; 
-    
+    _contentController.text = journal.content;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("${WeekDay(journal.createdAt.weekday).long.toLowerCase()}, ${journal.createdAt.day}  |  ${journal.createdAt.month}  |  ${journal.createdAt.year}"),
+        title: Text(
+          "${WeekDay(journal.createdAt.weekday).long.toLowerCase()}, ${journal.createdAt.day}  |  ${journal.createdAt.month}  |  ${journal.createdAt.year}",
+        ),
         actions: [
           IconButton(
-              onPressed: (){registerJournal(context);},
-              icon: const Icon(Icons.check))
+            onPressed: () {
+              if (isEditing) {
+                editJournal(context); // Chama a função de edição
+              } else {
+                registerJournal(context); // Chama a função de registro
+              }
+            },
+            icon: const Icon(Icons.check),
+          ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextField(
           controller: _contentController,
-          keyboardType:  TextInputType.multiline,
+          keyboardType: TextInputType.multiline,
           style: const TextStyle(fontSize: 24),
           expands: true,
           minLines: null,
@@ -39,38 +53,37 @@ class AddJournalScreen extends StatelessWidget {
     );
   }
 
-  // Se Journal for vazio, chama o método registerJournal, senão chama o método editJournal 
+  void registerJournal(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      String? token = prefs.getString("accessToken");
+      if (token != null) {
+        String content = _contentController.text;
 
-  void registerJournal(BuildContext context){
-    if (journal.content == ''){
-      _registerJournal(context);
-    }else{
-      _editJournal(context);
-    }
-  }
+        journal.content = content;
 
-  // Método editJournal
-  void _editJournal(BuildContext context) {
-    String content = _contentController.text;
+        JournalService service = JournalService();
 
-    journal.content = content;
-
-    JournalService service = JournalService();
-    service.edit(journal).then((value) {
-      Navigator.pop(context, value);
+        service.register(journal).then((value) {
+          Navigator.pop(context, value);
+        });
+      }
     });
   }
 
-  // Método registerJournal
-  void _registerJournal(BuildContext context) {
-    String content = _contentController.text;
+  void editJournal(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      String? token = prefs.getString("accessToken");
+      if (token != null) {
+        String content = _contentController.text;
 
-    journal.content = content;
+        journal.content = content;
 
-    JournalService service = JournalService();
-    service.register(journal).then((value) {
-      Navigator.pop(context, value);
+        JournalService service = JournalService();
+
+        service.edit(journal, token).then((value) {
+          Navigator.pop(context, value);
+        });
+      }
     });
   }
-
 }

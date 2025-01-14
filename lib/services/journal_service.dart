@@ -1,16 +1,13 @@
-// https://www.npmjs.com/package/json-server-auth
-
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:teste1/service/http_interceptors.dart';
 
 import '../models/journal.dart';
+import 'http_interceptors.dart';
 
 class JournalService {
-  static const String url = "http://192.168.56.1:3000/";
+  static const String url = "http://192.168.1.112:3000/";
   static const String resource = "journals/";
 
   http.Client client = InterceptedClient.build(
@@ -45,35 +42,42 @@ class JournalService {
     return false;
   }
 
-  Future<bool> edit(Journal journal, String token) async {
-    String jsonJournal = json.encode(journal.toMap());
+  Future<bool> edit(String id, Journal journal) async {
+    String journalJSON = json.encode(journal.toMap());
+
+    String token = await getToken();
     http.Response response = await client.put(
-      Uri.parse(getURL() + journal.id),
+      Uri.parse("${getURL()}$id"),
       headers: {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer $token"
-      }, // Adicionado
-      body: jsonJournal,
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: journalJSON,
     );
 
     if (response.statusCode == 200) {
       return true;
     }
+
     return false;
   }
 
-  Future<List<Journal>> getAll(
-      {required String id, required String token}) async {
+  Future<List<Journal>> getAll(String id) async {
+    String token = await getToken();
     http.Response response = await client.get(
-        Uri.parse("${url}users/$id/journals"),
-        headers: {"Authorization": "Bearer $token"});
-
-    List<Journal> result = [];
+      Uri.parse("${url}users/$id/$resource"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode != 200) {
       //TODO: Criar uma exceção personalizada
-      return result;
+      throw Exception();
     }
+
+    List<Journal> result = [];
 
     List<dynamic> jsonList = json.decode(response.body);
     for (var jsonMap in jsonList) {
@@ -84,7 +88,14 @@ class JournalService {
   }
 
   Future<bool> remove(String id) async {
-    http.Response response = await client.delete(Uri.parse("${getURL()}$id"));
+    String token = await getToken();
+    http.Response response = await client.delete(
+      Uri.parse("${getURL()}$id"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       return true;
@@ -93,7 +104,7 @@ class JournalService {
     return false;
   }
 
-    Future<String> getToken() async {
+  Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('accessToken');
     if (token != null) {
@@ -101,5 +112,4 @@ class JournalService {
     }
     return '';
   }
-
 }
