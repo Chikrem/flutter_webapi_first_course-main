@@ -121,7 +121,4 @@ Future<void> _createDefaultJournal() async {
     }
   }
 }
-
-
-
 }
