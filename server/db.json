@@ -7,24 +7,9 @@
       "id": 1
     },
     {
-      "email": "ricarth@gmail.com",
-      "password": "$2a$10$dt3WK2roW.opgOfEaGijFu.tmuC7394Eiog.ua891cEATOBxUlZbi",
-      "id": 2
-    },
-    {
-      "email": "carlos@alura.com.br",
-      "password": "$2a$10$wYBrFOJZ1Yun38xfe0MaeOGk0Q2d5G0dyu3TWbtbLkavybQ0sRXky",
-      "id": 3
-    },
-    {
       "email": "input@input.com",
-      "password": "$2a$10$OkWrZMx/Q0WbPcVtsIhtee9FPewsR2qhM8a/cVFRZf3.pA55jneM.",
+      "password": "$2a$10$c6Im70pb6chqLrv5m5yJEOEkOwRkalYHNk0LTZeAA0Q7Q3jsS8.1q",
       "id": 4
-    },
-    {
-      "email": "dadasdqaw@dasdqwdqw",
-      "password": "$2a$10$DvV6DfxIfSkLr81wwQ7X6eBjA0CYHl7TzJpziJUexrSJbKSH860.q",
-      "id": 5
     },
     {
       "email": "input2@input.com",
@@ -32,19 +17,12 @@
       "id": 6
     },
     {
-      "email": "casca@asd.com",
-      "password": "$2a$10$5fwLaMHqCCJMWcaXrlHcBu4yQD2S498BbfwhPW5PvBQr6ZC6iI76.",
+      "email": "car@car.com",
+      "password": "$2a$10$jQRUKwqHNHLXyFRLgHrA3.uGPbquAjPOTR0ARese8evwh2FSXR6ni",
       "id": 7
     }
   ],
   "journals": [
-    {
-      "id": "19f66470-d2bb-11ef-9885-e3af14968f9e",
-      "content": "dasdda",
-      "created_at": "2025-01-08T18:04:08.516380",
-      "updated_at": "2025-01-08T18:04:08.516380",
-      "userId": 4
-    },
     {
       "id": "23763a10-d2bc-11ef-9092-05585565bdff",
       "content": "asdasda",
@@ -53,11 +31,18 @@
       "userId": 4
     },
     {
-      "id": "2c50eb80-d2bc-11ef-9092-05585565bdff",
-      "content": "dasdasdasd",
-      "created_at": "2025-01-10T18:11:18.017465",
-      "updated_at": "2025-01-10T18:11:18.017465",
+      "id": "f0398fc0-d2c1-11ef-9092-05585565bdff",
+      "content": "delete  3",
+      "created_at": "2025-01-09T18:11:18.017465",
+      "updated_at": "2025-01-09T18:11:18.017465",
       "userId": 4
+    },
+    {
+      "id": "cf1a3fa0-d2cc-11ef-be58-43a02bcf1ebd",
+      "content": "Bem-vindo ao seu diário! Hoje é 2025-01-14 ",
+      "created_at": "2025-01-14T20:10:56.156244",
+      "updated_at": "2025-01-14T20:10:56.156253",
+      "userId": 6
     }
   ]
 }

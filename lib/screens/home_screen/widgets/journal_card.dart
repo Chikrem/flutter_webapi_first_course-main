@@ -10,12 +10,15 @@ class JournalCard extends StatelessWidget {
   final DateTime showedDate;
   final Function refreshFunction;
   final int userId;
+  final String token;
+
   const JournalCard(
       {super.key,
       this.journal,
       required this.showedDate,
       required this.refreshFunction,
-      required this.userId});
+      required this.userId,
+      required this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +164,7 @@ void callAddJournalScreen(BuildContext context, {Journal? journal}) {
       if (value != null && value) {     // Se clicar fora = null
         JournalService service = JournalService();
         if (journal != null) {
-          service.remove(journal!.id).then((value) {
+          service.remove(journal!.id, token).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text((value)
                     ? "Removido com sucesso!"

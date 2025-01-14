@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:teste1/models/journal.dart';
 import 'package:teste1/screens/common/dialog.dart';
 import 'package:teste1/service/auth_service.dart';
+import 'package:teste1/service/journal_service.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -70,35 +73,55 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void login(BuildContext context) async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
+void login(BuildContext context) async {
+  String email = _emailController.text;
+  String password = _passwordController.text;
 
-    // print("$password - $email");
-
-    try {
-      _authService.login(email: email, password: password).then((resultLogin) {
-        if (resultLogin) {
-          Navigator.pushReplacementNamed(context, "home");
-        }
-      });
-    } on UserNotFoundException {
-      showConfirmationDialog(
-        context,
-        content:
-            "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
-        affirmativeOption: "CRIAR",
-      ).then((value) {
-        if (value != null && value) {
-          _authService
-              .register(email: email, password: password)
-              .then((resultRegister) {
-            if (resultRegister) {
+  try {
+    bool resultLogin = await _authService.login(email: email, password: password);
+    if (resultLogin) {
+      Navigator.pushReplacementNamed(context, "home");
+    }
+  } on UserNotFoundException {
+    showConfirmationDialog(
+      context,
+      content:
+          "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
+      affirmativeOption: "CRIAR",
+    ).then((value) {
+      if (value != null && value) {
+        _authService.register(email: email, password: password).then((resultRegister) {
+          if (resultRegister) {
+            // Após o registro do usuário, cria o journal padrão
+            _createDefaultJournal().then((_) {
               Navigator.pushReplacementNamed(context, "home");
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      }
+    });
+  }
+}
+
+Future<void> _createDefaultJournal() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int? userId = prefs.getInt("id");
+  String? token = prefs.getString("accessToken");
+
+  if (userId != null && token != null) {
+    // Criando um journal padrão com mensagem de boas-vindas
+    Journal defaultJournal = Journal.empty(id: userId, welcomeMessage: "Bem-vindo ao seu diário! Hoje é ${DateTime.now().toLocal().toString().split(" ")[0]}");
+
+    JournalService journalService = JournalService();
+    bool success = await journalService.register(defaultJournal);
+    if (success) {
+      print('Journal padrão registrado com sucesso!');
+    } else {
+      print('Erro ao registrar journal padrão.');
     }
   }
+}
+
+
+
 }

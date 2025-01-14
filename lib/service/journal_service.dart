@@ -65,8 +65,9 @@ class JournalService {
   Future<List<Journal>> getAll(
       {required String id, required String token}) async {
     http.Response response = await client.get(
-        Uri.parse("${url}users/$id/journals"),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse("${url}users/$id/journals"),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     List<Journal> result = [];
 
@@ -76,15 +77,19 @@ class JournalService {
     }
 
     List<dynamic> jsonList = json.decode(response.body);
-    for (var jsonMap in jsonList) {
-      result.add(Journal.fromMap(jsonMap));
+    for (var jsonItem in jsonList) {
+      result.add(Journal.fromMap(jsonItem));
     }
 
     return result;
   }
 
-  Future<bool> remove(String id) async {
-    http.Response response = await client.delete(Uri.parse("${getURL()}$id"));
+  Future<bool> remove(String id, String token) async {
+    http.Response response = await client.delete(
+      Uri.parse("${getURL()}$id"),
+      headers: {
+      'Authorization': 'Bearer $token'}
+      );
 
     if (response.statusCode == 200) {
       return true;
@@ -93,7 +98,7 @@ class JournalService {
     return false;
   }
 
-    Future<String> getToken() async {
+  Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('accessToken');
     if (token != null) {

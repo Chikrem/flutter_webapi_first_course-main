@@ -76,6 +76,14 @@ class AuthService {
     prefs.remove("email");
   }
 
+//   Future<void> handleLoginRedirect(BuildContext context) async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   final userId = prefs.getInt("id");
+//   if (userId != null) {
+//     fetchUserTasksAndRedirect(context, userId);
+//   }
+// }
+
 }
 
 class UserNotFoundException implements Exception {}
