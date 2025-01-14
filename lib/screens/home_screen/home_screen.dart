@@ -27,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   JournalService service = JournalService();
 
+  int? userId;
+
   @override
   void initState() {
     refresh();
@@ -50,15 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: ListView(
+      body: (userId != null) ?
+      ListView(
         controller: _listScrollController,
         children: generateListJournalCards(
           refreshFunction: refresh,
           windowPage: windowPage,
           currentDay: currentDay,
           database: database,
+          userId: userId!,
         ),
-      ),
+      ) : const Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -69,12 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
       int? id = prefs.getInt("id");
       // print("Token armazenado: $token");
 
-if(token != null && email != null && id != null){
-
-        service.getAll(id: id.toString(), token: token).then((List<Journal> listJournal) {
-
-          if(listJournal.isNotEmpty){
-
+      if (token != null && email != null && id != null) {
+        setState(() {
+          userId = id;
+        });
+        service
+            .getAll(id: id.toString(), token: token)
+            .then((List<Journal> listJournal) {
+          if (listJournal.isNotEmpty) {
             setState(() {
               database = {};
               for (Journal journal in listJournal) {
@@ -82,19 +88,16 @@ if(token != null && email != null && id != null){
               }
 
               if (_listScrollController.hasClients) {
-                final double position = _listScrollController.position
-                    .maxScrollExtent;
+                final double position =
+                    _listScrollController.position.maxScrollExtent;
                 _listScrollController.jumpTo(position);
               }
             });
-
-          }else{
-
+          } else {
             Navigator.pushReplacementNamed(context, "login");
           }
         });
-
-      }else{
+      } else {
         Navigator.pushReplacementNamed(context, "login");
       }
     });
