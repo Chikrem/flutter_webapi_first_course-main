@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste1/models/journal.dart';
 import 'package:teste1/screens/common/dialog.dart';
+import 'package:teste1/screens/common/exception_dialog.dart';
 import 'package:teste1/service/auth_service.dart';
 import 'package:teste1/service/journal_service.dart';
 
@@ -73,35 +76,48 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-void login(BuildContext context) async {
-  String email = _emailController.text;
-  String password = _passwordController.text;
+    login(BuildContext context) async {
+        String email = _emailController.text;
+        String password = _passwordController.text;
 
-  try {
-    bool resultLogin = await _authService.login(email: email, password: password);
-    if (resultLogin) {
-      Navigator.pushReplacementNamed(context, "home");
+        _authService.login(email: email, password: password).then(
+            (resultLogin) {
+                if (resultLogin) {
+                    Navigator.pushReplacementNamed(context, "home");
+                }
+            },
+        ).catchError(
+            (error) {
+                showExceptionDialog(context, content: error.toString());
+            },
+            test: (error) => error is Exception,
+        ).catchError((error){
+             showConfirmationDialog(
+                    context,
+                    content:
+                        "Deseja criar um novo usuário com email $email e a senha $password?",
+                    affirmativeOption: "CRIAR",
+                ).then((value) {
+                        if (value != null && value) {
+                            _authService
+                                    .register(email: email, password: password)
+                                    .then((resultRegister) {
+                                if (resultRegister) {
+                                    Navigator.pushReplacementNamed(context, "home");
+                                }
+                            });
+                        }
+                    });
+        }, test: (error) => error is UserNotFoundException).catchError(
+            (error) {
+                showExceptionDialog(context,
+                    content: "O servidor demorou para responder, tente novamente mais tarde.");},
+            test: (error) => error is TimeoutException,
+        );
     }
-  } on UserNotFoundException {
-    showConfirmationDialog(
-      context,
-      content:
-          "Deseja criar um novo usuário usando o e-mail $email e a senha inserida?",
-      affirmativeOption: "CRIAR",
-    ).then((value) {
-      if (value != null && value) {
-        _authService.register(email: email, password: password).then((resultRegister) {
-          if (resultRegister) {
-            // Após o registro do usuário, cria o journal padrão
-            _createDefaultJournal().then((_) {
-              Navigator.pushReplacementNamed(context, "home");
-            });
-          }
-        });
-      }
-    });
-  }
 }
+
+
 
 Future<void> _createDefaultJournal() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -121,4 +137,4 @@ Future<void> _createDefaultJournal() async {
     }
   }
 }
-}
+

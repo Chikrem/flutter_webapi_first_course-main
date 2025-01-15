@@ -6,16 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste1/service/http_interceptors.dart';
+import 'package:teste1/service/webclient.dart';
 
 import '../models/journal.dart';
 
 class JournalService {
-  static const String url = "http://192.168.56.1:3000/";
   static const String resource = "journals/";
 
-  http.Client client = InterceptedClient.build(
-    interceptors: [LoggingInterceptor()],
-  );
+  String url = WebClient.url;
+  http.Client client = WebClient().client;
 
   String getURL() {
     return "$url$resource";

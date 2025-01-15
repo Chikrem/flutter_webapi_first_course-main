@@ -5,13 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/intercepted_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste1/service/http_interceptors.dart';
+import 'package:teste1/service/webclient.dart';
 
 class AuthService {
-  static const String url = "http://192.168.56.1:3000/";
 
-  http.Client client = InterceptedClient.build(
-    interceptors: [LoggingInterceptor()],
-  );
+  String url = WebClient.url;
+  http.Client client = WebClient().client;
 
   Future<bool> login({required String email, required String password}) async {
     http.Response response = await client.post(
@@ -75,14 +74,6 @@ class AuthService {
     prefs.remove("id");
     prefs.remove("email");
   }
-
-//   Future<void> handleLoginRedirect(BuildContext context) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   final userId = prefs.getInt("id");
-//   if (userId != null) {
-//     fetchUserTasksAndRedirect(context, userId);
-//   }
-// }
 
 }
 

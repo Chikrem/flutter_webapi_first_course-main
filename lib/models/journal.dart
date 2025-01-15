@@ -15,7 +15,7 @@ class Journal {
     required this.userId
   });
 
-Journal.empty({required int id, String welcomeMessage = "Bem-vindo ao seu diário!"})
+  Journal.empty({required int id, String welcomeMessage = "Bem-vindo ao seu diário!"})
     : id = const Uuid().v1(),
       content = welcomeMessage,
       createdAt = DateTime.now(),
